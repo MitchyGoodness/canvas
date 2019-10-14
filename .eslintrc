@@ -1,0 +1,49 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 9
+  },
+  "rules": {
+    "semi": [
+      "error",
+      "always",
+      { "omitLastInOneLineBlock": true }
+    ],
+    "space-in-parens": [
+      "error",
+      "never"
+    ],
+    "space-infix-ops": [
+      "error",
+      {
+        "int32Hint": false
+      }
+    ],
+    "no-lonely-if": "error",
+    "quotes": [
+      "error",
+      "double",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "curly": "error",
+    //      "multi",
+    //      "consistent"
+    "no-var": "error",
+    "prefer-const": "warn",
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
+    "arrow-spacing": "error",
+    "arrow-parens": ["error", "as-needed"],
+    "prefer-template": "error",
+    "template-curly-spacing": "error"
+  },
+  "globals": {
+    "appContextPath": false,
+    "$": false,
+    "bootbox": false
+  }
+}
