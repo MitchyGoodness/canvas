@@ -20,7 +20,7 @@ const drawHandler = (function () {
 
         drawLinearGradient(linearGradientCtx);
         drawRadialGradient(radialGradientCtx);
-        drawMateriaGrid();
+        requestAnimationFrame(drawRotatingMateriaGrid);
     }
 
     function getContext(id) {
@@ -146,14 +146,53 @@ const drawHandler = (function () {
         ctx.stroke();
     }
 
-    function drawMateriaGrid() {
+    function drawRotatingMateriaGrid() {
         const canvas = document.getElementById("materiaGrid");
         const ctx = canvas.getContext("2d");
+        const time = new Date().getTime();
+
+        ctx.clearRect(0, 0, 160, 160);
+        ctx.save();
+
+        ctx.translate(80, 80);
+        ctx.rotate(time % 360000 / 1000);
+        ctx.translate(-80, -80);
+        drawMateriaGrid(canvas, ctx);
+        ctx.restore();
+
+        requestAnimationFrame(drawRotatingMateriaGrid);
+    }
+
+    function drawMateriaGrid(canvas, ctx) {
 
         ctx.strokeStyle = colors[0];
         ctx.fillStyle = colors[0];
 
-        ctx.arc(canvas.width / 2, canvas.height / 2, 70, 0, Math.PI * 2, false);
+        drawCircle(canvas, ctx, canvas.width / 2, canvas.height / 2, 20, colors[0]);
+        drawCircle(canvas, ctx, canvas.width / 2, canvas.height / 2, 79, colors[0]);
+
+        drawCircle(canvas, ctx, canvas.width * .25, canvas.height * .5, 10, colors[0]);
+        drawCircle(canvas, ctx, canvas.width * .15, canvas.height * .4, 5, colors[0]);
+        drawCircle(canvas, ctx, canvas.width * .15, canvas.height * .6, 5, colors[0]);
+
+        drawCircle(canvas, ctx, canvas.width * .5, canvas.height * .25, 10, colors[0]);
+        drawCircle(canvas, ctx, canvas.width * .4, canvas.height * .15, 5, colors[0]);
+        drawCircle(canvas, ctx, canvas.width * .6, canvas.height * .15, 5, colors[0]);
+
+        drawCircle(canvas, ctx, canvas.width * .75, canvas.height * .5, 10, colors[0]);
+        drawCircle(canvas, ctx, canvas.width * .85, canvas.height * .4, 5, colors[0]);
+        drawCircle(canvas, ctx, canvas.width * .85, canvas.height * .6, 5, colors[0]);
+
+        drawCircle(canvas, ctx, canvas.width * .5, canvas.height * .75, 10, colors[0]);
+        drawCircle(canvas, ctx, canvas.width * .4, canvas.height * .85, 5, colors[0]);
+        drawCircle(canvas, ctx, canvas.width * .6, canvas.height * .85, 5, colors[0]);
+    }
+
+    function drawCircle(canvas, ctx, centerX, centerY, radius, color) {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
+        ctx.closePath();
+        ctx.stroke();
     }
 
     return {init: init};
