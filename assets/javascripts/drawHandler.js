@@ -8,8 +8,11 @@ const drawHandler = (function () {
         "difference", "exclusion", "hue", "saturation", "color",
         "luminosity"
     ];
+    let mousePointerLocation;
+
 
     function init() {
+        mousePointerLocation = new Point(0, 0);
         drawRectangle();
         drawArrow();
 
@@ -28,11 +31,14 @@ const drawHandler = (function () {
 
         drawLinearGradient(linearGradientCtx);
         drawRadialGradient(radialGradientCtx);
+        drawRingOfSquares();
         const materiaGridTimer = requestAnimationFrame(drawRotatingMateriaGrid);
         const redColorPalettePixelTimer = requestAnimationFrame(() => drawColorPalette("red"));
         const greenColorPalettePixelTimer = requestAnimationFrame(() => drawColorPalette("green"));
         const blueColorPalettePixelTimer = requestAnimationFrame(() => drawColorPalette("blue"));
-        drawRingOfSquares();
+
+        addEventListener("mousemove", trackMouse, false);
+        const mouseTrackerTimer = requestAnimationFrame(drawMousePointerLocation);
     }
 
     function getContext(id) {
@@ -211,7 +217,6 @@ const drawHandler = (function () {
         const ctx = canvas.getContext("2d");
 
         const radianConstant = Math.PI / 20;
-        const k = (canvas.width / 10);
 
         const sin = Math.sin(radianConstant);
         const cos = Math.cos(radianConstant);
@@ -240,7 +245,7 @@ const drawHandler = (function () {
         const pixelData = ctx.createImageData(canvas.height, canvas.width);
 
         const time = new Date().getTime();
-        const i = parseInt(Math.sin(time / 10000) * 255);
+        const i = parseInt(Math.sin(time / 5000) * 255);
 
         ctx.clearRect(0, 0, 255, 255);
 
@@ -269,6 +274,43 @@ const drawHandler = (function () {
         ctx.putImageData(pixelData, 0, 0);
 
         requestAnimationFrame(() => drawColorPalette(colorFocus));
+    }
+
+    function trackMouse(event) {
+        const canvas = document.getElementById("mouseTracker");
+        const bounds = canvas.getBoundingClientRect();
+
+        const offsetX = event.clientX - bounds.left;
+        if (0 > offsetX) {
+            mousePointerLocation.x = 0;
+        } else if (offsetX > canvas.width) {
+            mousePointerLocation.x = canvas.width;
+        } else {
+            mousePointerLocation.x = offsetX;
+        }
+
+        const offsetY = event.clientY - bounds.top;
+        if (0 > offsetY) {
+            mousePointerLocation.y = 0;
+        } else if (offsetY > canvas.height) {
+            mousePointerLocation.y = canvas.height;
+        } else {
+            mousePointerLocation.y = offsetY;
+        }
+    }
+
+    function drawMousePointerLocation() {
+        const canvas = document.getElementById("mouseTracker");
+        const ctx = canvas.getContext("2d");
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.arc(mousePointerLocation.x, mousePointerLocation.y, 10, 0, Math.PI * 2, false);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+
+        requestAnimationFrame(drawMousePointerLocation);
     }
 
     return {init: init};
