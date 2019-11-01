@@ -1,5 +1,13 @@
 const drawHandler = (function () {
     const colors = ["red", "orangered", "orange", "yellow", "turquoise", "green", "darkcyan", "blue", "rebeccapurple"];
+    const globalCompositeOperationOptions = [
+        "source-over", "source-in", "source-out", "source-atop", "destination-over",
+        "destination-in", "destination-out", "destination-atop", "lighter", "copy",
+        "xor", "multiply", "screen", "overlay", "darken",
+        "lighten", "color-dodge", "color-burn", "hard-light", "soft-light",
+        "difference", "exclusion", "hue", "saturation", "color",
+        "luminosity"
+    ];
 
     function init() {
         drawRectangle();
@@ -20,7 +28,11 @@ const drawHandler = (function () {
 
         drawLinearGradient(linearGradientCtx);
         drawRadialGradient(radialGradientCtx);
-        requestAnimationFrame(drawRotatingMateriaGrid);
+        const materiaGridTimer = requestAnimationFrame(drawRotatingMateriaGrid);
+        const redColorPalettePixelTimer = requestAnimationFrame(() => drawColorPalette("red"));
+        const greenColorPalettePixelTimer = requestAnimationFrame(() => drawColorPalette("green"));
+        const blueColorPalettePixelTimer = requestAnimationFrame(() => drawColorPalette("blue"));
+        drawRingOfSquares();
     }
 
     function getContext(id) {
@@ -89,7 +101,6 @@ const drawHandler = (function () {
     }
 
     function drawCube(ctx) {
-
 
     }
 
@@ -193,6 +204,71 @@ const drawHandler = (function () {
         ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, false);
         ctx.closePath();
         ctx.stroke();
+    }
+
+    function drawRingOfSquares() {
+        const canvas = document.getElementById("ringOfSquares");
+        const ctx = canvas.getContext("2d");
+
+        const radianConstant = Math.PI / 20;
+        const k = (canvas.width / 10);
+
+        const sin = Math.sin(radianConstant);
+        const cos = Math.cos(radianConstant);
+
+
+        ctx.translate(canvas.width / 1.5, canvas.height / 4);
+
+        for (let i = 0; i <= 39; i++) {
+            const red = parseInt(Math.sin(radianConstant * i) * 255);
+            const green = parseInt(Math.cos(radianConstant * i) * 255);
+            const blue = parseInt(Math.tan(radianConstant * i) * 255);
+
+            ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+            ctx.strokeStyle = `rgb(${255 - red}, ${255 - green}, ${255 - blue})`;
+
+            ctx.fillRect(0, 0, canvas.width / 10, canvas.width / 10);
+            ctx.strokeRect(0, 0, canvas.width / 10, canvas.width / 10);
+
+            ctx.transform(cos, sin, -sin, cos, 5, 5);
+        }
+    }
+
+    function drawColorPalette(colorFocus) {
+        const canvas = document.getElementById(`${colorFocus}ColorPalette`);
+        const ctx = canvas.getContext("2d");
+        const pixelData = ctx.createImageData(canvas.height, canvas.width);
+
+        const time = new Date().getTime();
+        const i = parseInt(Math.sin(time / 10000) * 255);
+
+        ctx.clearRect(0, 0, 255, 255);
+
+        for (let j = 0; j < pixelData.height; j++) {
+            for (let k = 0; k < pixelData.width; k++) {
+                const length = j * (pixelData.width * 4) + k * 4;
+
+                if (colorFocus === "red") {
+                    pixelData.data[length] = i;
+                    pixelData.data[length + 1] = j;
+                    pixelData.data[length + 2] = k;
+                } else if (colorFocus === "green") {
+                    pixelData.data[length] = j;
+                    pixelData.data[length + 1] = i;
+                    pixelData.data[length + 2] = k;
+                } else {
+                    pixelData.data[length] = j;
+                    pixelData.data[length + 1] = k;
+                    pixelData.data[length + 2] = i;
+                }
+
+                pixelData.data[length + 3] = 255;
+            }
+        }
+
+        ctx.putImageData(pixelData, 0, 0);
+
+        requestAnimationFrame(() => drawColorPalette(colorFocus));
     }
 
     return {init: init};
