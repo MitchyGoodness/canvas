@@ -81,7 +81,7 @@ class Line {
 
         ctx.moveTo(this.end.x, this.end.y);
         ctx.lineTo(arrowPointA.x, arrowPointA.y);
-        ctx.arcTo(this.end.x, this.end.y, arrowPointB.x, arrowPointB.y, 8);
+        ctx.arcTo(this.end.x, this.end.y, arrowPointB.x, arrowPointB.y, 10);
         ctx.lineTo(this.end.x, this.end.y);
 
         ctx.closePath();
