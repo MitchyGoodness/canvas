@@ -89,9 +89,9 @@ class Line {
         ctx.fill();
     }
 
-    drawRotatingArrow(ctx, color){
+    drawRotatingArrow(ctx, color) {
         const that = this;
-        ctx.clearRect(0,0,160,160);
+        ctx.clearRect(0, 0, 160, 160);
         ctx.save();
 
         const time = new Date();
@@ -104,6 +104,8 @@ class Line {
 
         ctx.restore();
 
-        requestAnimationFrame(function(){that.drawRotatingArrow(ctx, color)});
+        requestAnimationFrame(function () {
+            that.drawRotatingArrow(ctx, color);
+        });
     }
 }
