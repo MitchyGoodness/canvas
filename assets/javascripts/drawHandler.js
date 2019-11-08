@@ -9,10 +9,12 @@ const drawHandler = (function () {
         "luminosity"
     ];
     let mousePointerLocation;
+    let collisionBallCenterPoint;
+    let spriteLocation;
+    let spriteVector;
 
 
     function init() {
-        mousePointerLocation = new Point(0, 0);
         drawRectangle();
         drawArrow();
 
@@ -37,8 +39,19 @@ const drawHandler = (function () {
         const greenColorPalettePixelTimer = requestAnimationFrame(() => drawColorPalette("green"));
         const blueColorPalettePixelTimer = requestAnimationFrame(() => drawColorPalette("blue"));
 
-        addEventListener("mousemove", trackMouse, false);
-        const mouseTrackerTimer = requestAnimationFrame(drawMousePointerLocation);
+        mousePointerLocation = new Point(0, 0);
+        setupMouseListeners();
+        requestAnimationFrame(drawMousePointerLocation);
+
+        collisionBallCenterPoint = new Point(30, 30);
+        requestAnimationFrame(drawCollisionDetectionDemo);
+
+        setupAudioListeners();
+
+        spriteLocation = new Point(127, 127);
+        spriteVector = new Vector(0,0);
+        setupKeyboardControlListeners();
+        requestAnimationFrame(drawKeyboardControlDemo);
     }
 
     function getContext(id) {
@@ -276,24 +289,129 @@ const drawHandler = (function () {
         requestAnimationFrame(() => drawColorPalette(colorFocus));
     }
 
+    function setupMouseListeners() {
+        const canvas = document.getElementById("mouseTracker");
+
+        canvas.addEventListener("mouseenter", () => addEventListener("mousemove", trackMouse, false));
+        canvas.addEventListener("mouseleave", () => removeEventListener("mousemove", trackMouse));
+    }
+
+    function setupAudioListeners(){
+        const $audio = new Audio("assets/audio/Ding.wav");
+
+        document.addEventListener("keydown", event => {
+            if(!event.isComposing && event.code === "KeyP"){
+                $audio.play();
+            }
+        });
+
+        document.addEventListener("keyup", event => {
+            if (!event.isComposing && event.keyCode !== 229) {
+                $audio.pause();
+                $audio.currentTime = 0;
+            }
+        });
+    }
+
+    function setupKeyboardControlListeners(){
+        document.addEventListener("keydown", event => {
+            if (event.isComposing || event.keyCode === 229) {
+                //do nothing
+
+            } else if(event.code === "ArrowUp"){
+                spriteVector.y = -1;
+
+            } else if(event.code === "ArrowDown"){
+                spriteVector.y = 1;
+
+            } else if(event.code === "ArrowLeft"){
+                spriteVector.x = -1;
+
+            } else if(event.code === "ArrowRight"){
+                spriteVector.x = 1;
+            }
+        });
+
+        document.addEventListener("keyup", event => {
+            if (event.isComposing || event.keyCode === 229) {
+                //do nothing
+
+            } else if(event.code === "ArrowUp"){
+                spriteVector.y += 1;
+
+            } else if(event.code === "ArrowDown"){
+                spriteVector.y -= 1;
+
+            } else if(event.code === "ArrowLeft"){
+                spriteVector.x += 1;
+
+            } else if(event.code === "ArrowRight"){
+                spriteVector.x -= 1;
+            }
+        });
+    }
+
+    function animateKeyboardControlDemo(canvas){
+        const newX = spriteLocation.x + spriteVector.x;
+        const newY = spriteLocation.y + spriteVector.y;
+
+        const maxX = canvas.width - 10;
+        const maxY = canvas.height - 10;
+
+        if(10 > newX) {
+            spriteLocation.x = 10;
+
+        } else if(newX > maxX){
+            spriteLocation.x = maxX;
+
+        } else {
+            spriteLocation.x = newX;
+        }
+
+        if(10 > newY) {
+            spriteLocation.y = 10;
+
+        } else if(newY > maxY){
+            spriteLocation.y = maxY;
+
+        } else {
+            spriteLocation.y = newY;
+        }
+    }
+
+    function drawKeyboardControlDemo() {
+        const canvas = document.getElementById("keyboardControl");
+        const ctx = canvas.getContext("2d");
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.beginPath();
+        ctx.arc(spriteLocation.x, spriteLocation.y, 10, 0, Math.PI * 2, false);
+        ctx.closePath();
+        ctx.fill();
+
+        animateKeyboardControlDemo(canvas);
+        requestAnimationFrame(drawKeyboardControlDemo);
+    }
+
     function trackMouse(event) {
         const canvas = document.getElementById("mouseTracker");
         const bounds = canvas.getBoundingClientRect();
 
         const offsetX = event.clientX - bounds.left;
-        if (0 > offsetX) {
-            mousePointerLocation.x = 0;
-        } else if (offsetX > canvas.width) {
-            mousePointerLocation.x = canvas.width;
+        if (10 > offsetX) {
+            mousePointerLocation.x = 10;
+        } else if (offsetX > (canvas.width - 10)) {
+            mousePointerLocation.x = canvas.width - 10;
         } else {
             mousePointerLocation.x = offsetX;
         }
 
         const offsetY = event.clientY - bounds.top;
-        if (0 > offsetY) {
-            mousePointerLocation.y = 0;
-        } else if (offsetY > canvas.height) {
-            mousePointerLocation.y = canvas.height;
+        if (10 > offsetY) {
+            mousePointerLocation.y = 10;
+        } else if (offsetY > (canvas.height - 10)) {
+            mousePointerLocation.y = canvas.height - 10;
         } else {
             mousePointerLocation.y = offsetY;
         }
@@ -311,6 +429,33 @@ const drawHandler = (function () {
         ctx.fill();
 
         requestAnimationFrame(drawMousePointerLocation);
+    }
+
+    function animateCollisionDetectionDemo() {
+        collisionBallCenterPoint.x++;
+        collisionBallCenterPoint.y++;
+    }
+
+    function drawCollisionDetectionDemo() {
+        const canvas = document.getElementById("collisionDetection");
+        const ctx = canvas.getContext("2d");
+
+        const rectangle1 = new Rectangle(new Point(canvas.width / 2, canvas.height / 2), 50, 5);
+        const rectangle2 = new Rectangle(new Point(0, canvas.height / 2), 50, 5);
+
+        animateCollisionDetectionDemo();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        rectangle1.draw(ctx);
+        rectangle2.draw(ctx);
+
+        ctx.beginPath();
+        ctx.arc(collisionBallCenterPoint.x, collisionBallCenterPoint.y, 10, 0, Math.PI * 2, false);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+
+        requestAnimationFrame(drawCollisionDetectionDemo);
     }
 
     return {init: init};

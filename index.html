@@ -13,6 +13,8 @@
         <script src="assets/javascripts/Line.js" type="text/javascript"></script>
         <script src="assets/javascripts/Point.js" type="text/javascript"></script>
         <script src="assets/javascripts/Square.js" type="text/javascript"></script>
+        <script src="assets/javascripts/Vector.js" type="text/javascript"></script>
+        <script src="assets/javascripts/Polygon.js" type="text/javascript"></script>
 
         <link rel="stylesheet" href="assets/stylesheets/index.css"/>
     </head>
@@ -30,313 +32,316 @@
         <canvas id="greenColorPalette" width="256" height="256"></canvas>
         <canvas id="blueColorPalette" width="256" height="256"></canvas>
         <canvas id="mouseTracker" width="256" height="256"></canvas>
+        <canvas id="collisionDetection" width="256" height="256"></canvas>
+        <canvas id="keyboardControl" width="256" height="256"></canvas>
 
-<!--        <table id="state">-->
-<!--            <tr title="state">-->
-<!--                <th>interface mixin CanvasState</th>-->
-<!--            </tr>-->
-<!--            <tr title="void save(); //push state on state stack">-->
-<!--                <td>save</td>-->
-<!--            </tr>-->
-<!--            <tr title="void restore(); //pop state stack and restore state">-->
-<!--                <td>restore</td>-->
-<!--            </tr>-->
-<!--        </table>-->
 
-<!--        <table id="transformations">-->
-<!--            <tr title="transformations (default transform is the identity matrix)">-->
-<!--                <th colspan="1000">interface mixin CanvasTransform</th>-->
-<!--            </tr>-->
-<!--            <tr title="void scale(unrestricted double x, unrestricted double y);">-->
-<!--                <td id="scale">scale</td>-->
-<!--                <td title="unrestricted double x">-->
-<!--                    <label for="scaleX">x</label>-->
-<!--                    <input id="scaleX" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double y">-->
-<!--                    <label for="scaleY">y</label>-->
-<!--                    <input id="scaleY" type="number"/>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td title="void rotate(unrestricted double angle);">rotate</td>-->
-<!--                <td title="unrestricted double angle">-->
-<!--                    <label for="rotateAngle">&angle;</label>-->
-<!--                    <input placeholder="angle" id="rotateAngle" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double angle">-->
-<!--                    <label for="rotateAngleType">&deg;/C</label>-->
-<!--                    <select id="rotateAngleType">-->
-<!--                        <option value="deg">degrees</option>-->
-<!--                        <option value="rad">radians</option>-->
-<!--                    </select>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            <tr title="void translate(unrestricted double x, unrestricted double y);">-->
-<!--                <td>translate</td>-->
-<!--                <td title="unrestricted double x">-->
-<!--                    <label for="translateX">x</label>-->
-<!--                    <input id="translateX" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double y">-->
-<!--                    <label for="translateY">y</label>-->
-<!--                    <input id="translateY" type="number"/>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            <tr title="void transform(unrestricted double a, unrestricted double b, unrestricted double c, unrestricted double d, unrestricted double e, unrestricted double f);">-->
-<!--                <td>transform</td>-->
-<!--                <td title="unrestricted double a || m11">-->
-<!--                    <label for="transformA">a</label>-->
-<!--                    <input id="transformA" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double b || m12 || m21">-->
-<!--                    <label for="transformB">b</label>-->
-<!--                    <input id="transformB" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double c || m21 || m12">-->
-<!--                    <label for="transformC">c</label>-->
-<!--                    <input id="transformC" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double d || m22">-->
-<!--                    <label for="transformD">d</label>-->
-<!--                    <input id="transformD" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double e || dx">-->
-<!--                    <label for="transformE">e</label>-->
-<!--                    <input id="transformE" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double f || dy">-->
-<!--                    <label for="transformF">f</label>-->
-<!--                    <input id="transformF" type="number"/>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            <tr title="[NewObject] DOMMatrix getTransform();">-->
-<!--                <td>getTransform</td>-->
-<!--            </tr>-->
-<!--            <tr title="void setTransform(unrestricted double a, unrestricted double b, unrestricted double c, unrestricted double d, unrestricted double e, unrestricted double f);">-->
-<!--                <td>setTransform</td>-->
-<!--                <td title="unrestricted double a || m11">-->
-<!--                    <label for="setTransformA">a</label>-->
-<!--                    <input id="setTransformA" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double b || m12 || m21">-->
-<!--                    <label for="setTransformB">b</label>-->
-<!--                    <input id="setTransformB" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double c || m21 || m12">-->
-<!--                    <label for="setTransformC">c</label>-->
-<!--                    <input id="setTransformC" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double d || m22">-->
-<!--                    <label for="setTransformD">d</label>-->
-<!--                    <input id="setTransformD" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double e || dx">-->
-<!--                    <label for="setTransformE">e</label>-->
-<!--                    <input id="setTransformE" type="number"/>-->
-<!--                </td>-->
-<!--                <td title="unrestricted double f || dy">-->
-<!--                    <label for="setTransformF">f</label>-->
-<!--                    <input id="setTransformF" type="number"/>-->
-<!--                </td>-->
-<!--            </tr>-->
-<!--            <tr title="void setTransform(optional DOMMatrix2DInit transform = {});">-->
-<!--                <td>setTransform</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td title="void resetTransform();">resetTransform</td>-->
-<!--            </tr>-->
-<!--        </table>-->
+        <!--        <table id="state">-->
+        <!--            <tr title="state">-->
+        <!--                <th>interface mixin CanvasState</th>-->
+        <!--            </tr>-->
+        <!--            <tr title="void save(); //push state on state stack">-->
+        <!--                <td>save</td>-->
+        <!--            </tr>-->
+        <!--            <tr title="void restore(); //pop state stack and restore state">-->
+        <!--                <td>restore</td>-->
+        <!--            </tr>-->
+        <!--        </table>-->
 
-<!--        <table>-->
-<!--            <tr>-->
-<!--                <th colspan="1000" title="compositing">interface mixin CanvasCompositing</th>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td title="attribute unrestricted double globalAlpha; // (default 1.0)">scale</td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td title="attribute DOMString globalCompositeOperation; // (default source-over)">scale</td>-->
-<!--            </tr>-->
-<!--        </table>-->
+        <!--        <table id="transformations">-->
+        <!--            <tr title="transformations (default transform is the identity matrix)">-->
+        <!--                <th colspan="1000">interface mixin CanvasTransform</th>-->
+        <!--            </tr>-->
+        <!--            <tr title="void scale(unrestricted double x, unrestricted double y);">-->
+        <!--                <td id="scale">scale</td>-->
+        <!--                <td title="unrestricted double x">-->
+        <!--                    <label for="scaleX">x</label>-->
+        <!--                    <input id="scaleX" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double y">-->
+        <!--                    <label for="scaleY">y</label>-->
+        <!--                    <input id="scaleY" type="number"/>-->
+        <!--                </td>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--                <td title="void rotate(unrestricted double angle);">rotate</td>-->
+        <!--                <td title="unrestricted double angle">-->
+        <!--                    <label for="rotateAngle">&angle;</label>-->
+        <!--                    <input placeholder="angle" id="rotateAngle" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double angle">-->
+        <!--                    <label for="rotateAngleType">&deg;/C</label>-->
+        <!--                    <select id="rotateAngleType">-->
+        <!--                        <option value="deg">degrees</option>-->
+        <!--                        <option value="rad">radians</option>-->
+        <!--                    </select>-->
+        <!--                </td>-->
+        <!--            </tr>-->
+        <!--            <tr title="void translate(unrestricted double x, unrestricted double y);">-->
+        <!--                <td>translate</td>-->
+        <!--                <td title="unrestricted double x">-->
+        <!--                    <label for="translateX">x</label>-->
+        <!--                    <input id="translateX" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double y">-->
+        <!--                    <label for="translateY">y</label>-->
+        <!--                    <input id="translateY" type="number"/>-->
+        <!--                </td>-->
+        <!--            </tr>-->
+        <!--            <tr title="void transform(unrestricted double a, unrestricted double b, unrestricted double c, unrestricted double d, unrestricted double e, unrestricted double f);">-->
+        <!--                <td>transform</td>-->
+        <!--                <td title="unrestricted double a || m11">-->
+        <!--                    <label for="transformA">a</label>-->
+        <!--                    <input id="transformA" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double b || m12 || m21">-->
+        <!--                    <label for="transformB">b</label>-->
+        <!--                    <input id="transformB" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double c || m21 || m12">-->
+        <!--                    <label for="transformC">c</label>-->
+        <!--                    <input id="transformC" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double d || m22">-->
+        <!--                    <label for="transformD">d</label>-->
+        <!--                    <input id="transformD" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double e || dx">-->
+        <!--                    <label for="transformE">e</label>-->
+        <!--                    <input id="transformE" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double f || dy">-->
+        <!--                    <label for="transformF">f</label>-->
+        <!--                    <input id="transformF" type="number"/>-->
+        <!--                </td>-->
+        <!--            </tr>-->
+        <!--            <tr title="[NewObject] DOMMatrix getTransform();">-->
+        <!--                <td>getTransform</td>-->
+        <!--            </tr>-->
+        <!--            <tr title="void setTransform(unrestricted double a, unrestricted double b, unrestricted double c, unrestricted double d, unrestricted double e, unrestricted double f);">-->
+        <!--                <td>setTransform</td>-->
+        <!--                <td title="unrestricted double a || m11">-->
+        <!--                    <label for="setTransformA">a</label>-->
+        <!--                    <input id="setTransformA" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double b || m12 || m21">-->
+        <!--                    <label for="setTransformB">b</label>-->
+        <!--                    <input id="setTransformB" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double c || m21 || m12">-->
+        <!--                    <label for="setTransformC">c</label>-->
+        <!--                    <input id="setTransformC" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double d || m22">-->
+        <!--                    <label for="setTransformD">d</label>-->
+        <!--                    <input id="setTransformD" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double e || dx">-->
+        <!--                    <label for="setTransformE">e</label>-->
+        <!--                    <input id="setTransformE" type="number"/>-->
+        <!--                </td>-->
+        <!--                <td title="unrestricted double f || dy">-->
+        <!--                    <label for="setTransformF">f</label>-->
+        <!--                    <input id="setTransformF" type="number"/>-->
+        <!--                </td>-->
+        <!--            </tr>-->
+        <!--            <tr title="void setTransform(optional DOMMatrix2DInit transform = {});">-->
+        <!--                <td>setTransform</td>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--                <td title="void resetTransform();">resetTransform</td>-->
+        <!--            </tr>-->
+        <!--        </table>-->
 
-<!--        interface mixin CanvasFillStrokeStyles {-->
-<!--        // colors and styles (see also the CanvasPathDrawingStyles and CanvasTextDrawingStyles interfaces)-->
-<!--        CanvasGradient createLinearGradient(double x0, double y0, double x1, double y1);-->
-<!--        CanvasGradient createRadialGradient(double x0, double y0, double r0, double x1, double y1, double r1);-->
-<!--        CanvasPattern? createPattern(CanvasImageSource image, [TreatNullAs=EmptyString] DOMString repetition);-->
+        <!--        <table>-->
+        <!--            <tr>-->
+        <!--                <th colspan="1000" title="compositing">interface mixin CanvasCompositing</th>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--                <td title="attribute unrestricted double globalAlpha; // (default 1.0)">scale</td>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--                <td title="attribute DOMString globalCompositeOperation; // (default source-over)">scale</td>-->
+        <!--            </tr>-->
+        <!--        </table>-->
 
-<!--        };-->
+        <!--        interface mixin CanvasFillStrokeStyles {-->
+        <!--        // colors and styles (see also the CanvasPathDrawingStyles and CanvasTextDrawingStyles interfaces)-->
+        <!--        CanvasGradient createLinearGradient(double x0, double y0, double x1, double y1);-->
+        <!--        CanvasGradient createRadialGradient(double x0, double y0, double r0, double x1, double y1, double r1);-->
+        <!--        CanvasPattern? createPattern(CanvasImageSource image, [TreatNullAs=EmptyString] DOMString repetition);-->
 
-<!--        interface mixin CanvasShadowStyles {-->
-<!--        // shadows-->
-<!--        attribute unrestricted double shadowOffsetX; // (default 0)-->
-<!--        attribute unrestricted double shadowOffsetY; // (default 0)-->
-<!--        attribute unrestricted double shadowBlur; // (default 0)-->
-<!--        attribute DOMString shadowColor; // (default transparent black)-->
-<!--        };-->
+        <!--        };-->
 
-<!--        interface mixin CanvasFilters {-->
-<!--        // filters-->
-<!--        attribute DOMString filter; // (default "none")-->
-<!--        };-->
+        <!--        interface mixin CanvasShadowStyles {-->
+        <!--        // shadows-->
+        <!--        attribute unrestricted double shadowOffsetX; // (default 0)-->
+        <!--        attribute unrestricted double shadowOffsetY; // (default 0)-->
+        <!--        attribute unrestricted double shadowBlur; // (default 0)-->
+        <!--        attribute DOMString shadowColor; // (default transparent black)-->
+        <!--        };-->
 
-<!--        interface mixin CanvasRect {-->
-<!--        // rects-->
-<!--        void clearRect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);-->
-<!--        void fillRect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);-->
-<!--        void strokeRect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);-->
-<!--        };-->
+        <!--        interface mixin CanvasFilters {-->
+        <!--        // filters-->
+        <!--        attribute DOMString filter; // (default "none")-->
+        <!--        };-->
 
-<!--        interface mixin CanvasDrawPath {-->
-<!--        // path API (see also CanvasPath)-->
-<!--        void beginPath();-->
-<!--        void fill(optional CanvasFillRule fillRule = "nonzero");-->
-<!--        void fill(Path2D path, optional CanvasFillRule fillRule = "nonzero");-->
-<!--        void stroke();-->
-<!--        void stroke(Path2D path);-->
-<!--        void clip(optional CanvasFillRule fillRule = "nonzero");-->
-<!--        void clip(Path2D path, optional CanvasFillRule fillRule = "nonzero");-->
-<!--        boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule fillRule =-->
-<!--        "nonzero");-->
-<!--        boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule-->
-<!--        fillRule = "nonzero");-->
-<!--        boolean isPointInStroke(unrestricted double x, unrestricted double y);-->
-<!--        boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);-->
-<!--        };-->
+        <!--        interface mixin CanvasRect {-->
+        <!--        // rects-->
+        <!--        void clearRect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);-->
+        <!--        void fillRect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);-->
+        <!--        void strokeRect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);-->
+        <!--        };-->
 
-<!--        interface mixin CanvasUserInterface {-->
-<!--        void drawFocusIfNeeded(Element element);-->
-<!--        void drawFocusIfNeeded(Path2D path, Element element);-->
-<!--        void scrollPathIntoView();-->
-<!--        void scrollPathIntoView(Path2D path);-->
-<!--        };-->
+        <!--        interface mixin CanvasDrawPath {-->
+        <!--        // path API (see also CanvasPath)-->
+        <!--        void beginPath();-->
+        <!--        void fill(optional CanvasFillRule fillRule = "nonzero");-->
+        <!--        void fill(Path2D path, optional CanvasFillRule fillRule = "nonzero");-->
+        <!--        void stroke();-->
+        <!--        void stroke(Path2D path);-->
+        <!--        void clip(optional CanvasFillRule fillRule = "nonzero");-->
+        <!--        void clip(Path2D path, optional CanvasFillRule fillRule = "nonzero");-->
+        <!--        boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule fillRule =-->
+        <!--        "nonzero");-->
+        <!--        boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule-->
+        <!--        fillRule = "nonzero");-->
+        <!--        boolean isPointInStroke(unrestricted double x, unrestricted double y);-->
+        <!--        boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);-->
+        <!--        };-->
 
-<!--        interface mixin CanvasText {-->
-<!--        // text (see also the CanvasPathDrawingStyles and CanvasTextDrawingStyles interfaces)-->
-<!--        void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double-->
-<!--        maxWidth);-->
-<!--        void strokeText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double-->
-<!--        maxWidth);-->
-<!--        TextMetrics measureText(DOMString text);-->
-<!--        };-->
+        <!--        interface mixin CanvasUserInterface {-->
+        <!--        void drawFocusIfNeeded(Element element);-->
+        <!--        void drawFocusIfNeeded(Path2D path, Element element);-->
+        <!--        void scrollPathIntoView();-->
+        <!--        void scrollPathIntoView(Path2D path);-->
+        <!--        };-->
 
-<!--        interface mixin CanvasDrawImage {-->
-<!--        // drawing images-->
-<!--        void drawImage(CanvasImageSource image, unrestricted double dx, unrestricted double dy);-->
-<!--        void drawImage(CanvasImageSource image, unrestricted double dx, unrestricted double dy, unrestricted double dw,-->
-<!--        unrestricted double dh);-->
-<!--        void drawImage(CanvasImageSource image, unrestricted double sx, unrestricted double sy, unrestricted double sw,-->
-<!--        unrestricted double sh, unrestricted double dx, unrestricted double dy, unrestricted double dw, unrestricted-->
-<!--        double dh);-->
-<!--        };-->
+        <!--        interface mixin CanvasText {-->
+        <!--        // text (see also the CanvasPathDrawingStyles and CanvasTextDrawingStyles interfaces)-->
+        <!--        void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double-->
+        <!--        maxWidth);-->
+        <!--        void strokeText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double-->
+        <!--        maxWidth);-->
+        <!--        TextMetrics measureText(DOMString text);-->
+        <!--        };-->
 
-<!--        interface mixin CanvasImageData {-->
-<!--        // pixel manipulation-->
-<!--        ImageData createImageData(long sw, long sh);-->
-<!--        ImageData createImageData(ImageData imagedata);-->
-<!--        ImageData getImageData(long sx, long sy, long sw, long sh);-->
-<!--        void putImageData(ImageData imagedata, long dx, long dy);-->
-<!--        void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long-->
-<!--        dirtyHeight);-->
-<!--        };-->
+        <!--        interface mixin CanvasDrawImage {-->
+        <!--        // drawing images-->
+        <!--        void drawImage(CanvasImageSource image, unrestricted double dx, unrestricted double dy);-->
+        <!--        void drawImage(CanvasImageSource image, unrestricted double dx, unrestricted double dy, unrestricted double dw,-->
+        <!--        unrestricted double dh);-->
+        <!--        void drawImage(CanvasImageSource image, unrestricted double sx, unrestricted double sy, unrestricted double sw,-->
+        <!--        unrestricted double sh, unrestricted double dx, unrestricted double dy, unrestricted double dw, unrestricted-->
+        <!--        double dh);-->
+        <!--        };-->
 
-<!--        enum CanvasLineCap { "butt", "round", "square" };-->
-<!--        enum CanvasLineJoin { "round", "bevel", "miter" };-->
-<!--        enum CanvasTextAlign { "start", "end", "left", "right", "center" };-->
-<!--        enum CanvasTextBaseline { "top", "hanging", "middle", "alphabetic", "ideographic", "bottom" };-->
-<!--        enum CanvasDirection { "ltr", "rtl", "inherit" };-->
+        <!--        interface mixin CanvasImageData {-->
+        <!--        // pixel manipulation-->
+        <!--        ImageData createImageData(long sw, long sh);-->
+        <!--        ImageData createImageData(ImageData imagedata);-->
+        <!--        ImageData getImageData(long sx, long sy, long sw, long sh);-->
+        <!--        void putImageData(ImageData imagedata, long dx, long dy);-->
+        <!--        void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long-->
+        <!--        dirtyHeight);-->
+        <!--        };-->
 
-<!--        interface mixin CanvasPathDrawingStyles {-->
-<!--        // line caps/joins-->
-<!--        attribute unrestricted double lineWidth; // (default 1)-->
-<!--        attribute CanvasLineCap lineCap; // (default "butt")-->
-<!--        attribute CanvasLineJoin lineJoin; // (default "miter")-->
-<!--        attribute unrestricted double miterLimit; // (default 10)-->
+        <!--        enum CanvasLineCap { "butt", "round", "square" };-->
+        <!--        enum CanvasLineJoin { "round", "bevel", "miter" };-->
+        <!--        enum CanvasTextAlign { "start", "end", "left", "right", "center" };-->
+        <!--        enum CanvasTextBaseline { "top", "hanging", "middle", "alphabetic", "ideographic", "bottom" };-->
+        <!--        enum CanvasDirection { "ltr", "rtl", "inherit" };-->
 
-<!--        // dashed lines-->
-<!--        void setLineDash(sequence-->
-<!--        <unrestricted double> segments); // default empty-->
-<!--            sequence-->
-<!--            <unrestricted double> getLineDash();-->
-<!--                attribute unrestricted double lineDashOffset;-->
-<!--                };-->
+        <!--        interface mixin CanvasPathDrawingStyles {-->
+        <!--        // line caps/joins-->
+        <!--        attribute unrestricted double lineWidth; // (default 1)-->
+        <!--        attribute CanvasLineCap lineCap; // (default "butt")-->
+        <!--        attribute CanvasLineJoin lineJoin; // (default "miter")-->
+        <!--        attribute unrestricted double miterLimit; // (default 10)-->
 
-<!--                interface mixin CanvasTextDrawingStyles {-->
-<!--                // text-->
-<!--                attribute DOMString font; // (default 10px sans-serif)-->
-<!--                attribute CanvasTextAlign textAlign; // (default: "start")-->
-<!--                attribute CanvasTextBaseline textBaseline; // (default: "alphabetic")-->
-<!--                attribute CanvasDirection direction; // (default: "inherit")-->
-<!--                };-->
+        <!--        // dashed lines-->
+        <!--        void setLineDash(sequence-->
+        <!--        <unrestricted double> segments); // default empty-->
+        <!--            sequence-->
+        <!--            <unrestricted double> getLineDash();-->
+        <!--                attribute unrestricted double lineDashOffset;-->
+        <!--                };-->
 
-<!--                interface mixin CanvasPath {-->
-<!--                // shared path API methods-->
-<!--                void closePath();-->
-<!--                void moveTo(unrestricted double x, unrestricted double y);-->
-<!--                void lineTo(unrestricted double x, unrestricted double y);-->
-<!--                void quadraticCurveTo(unrestricted double cpx, unrestricted double cpy, unrestricted double x,-->
-<!--                unrestricted double y);-->
-<!--                void bezierCurveTo(unrestricted double cp1x, unrestricted double cp1y, unrestricted double cp2x,-->
-<!--                unrestricted double cp2y, unrestricted double x, unrestricted double y);-->
-<!--                void arcTo(unrestricted double x1, unrestricted double y1, unrestricted double x2, unrestricted double-->
-<!--                y2, unrestricted double radius);-->
-<!--                void rect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);-->
-<!--                void arc(unrestricted double x, unrestricted double y, unrestricted double radius, unrestricted double-->
-<!--                startAngle, unrestricted double endAngle, optional boolean anticlockwise = false);-->
-<!--                void ellipse(unrestricted double x, unrestricted double y, unrestricted double radiusX, unrestricted-->
-<!--                double radiusY, unrestricted double rotation, unrestricted double startAngle, unrestricted double-->
-<!--                endAngle, optional boolean anticlockwise = false);-->
-<!--                };-->
+        <!--                interface mixin CanvasTextDrawingStyles {-->
+        <!--                // text-->
+        <!--                attribute DOMString font; // (default 10px sans-serif)-->
+        <!--                attribute CanvasTextAlign textAlign; // (default: "start")-->
+        <!--                attribute CanvasTextBaseline textBaseline; // (default: "alphabetic")-->
+        <!--                attribute CanvasDirection direction; // (default: "inherit")-->
+        <!--                };-->
 
-<!--                [Exposed=(Window,Worker)]-->
-<!--                interface CanvasGradient {-->
-<!--                // opaque object-->
-<!--                void addColorStop(double offset, DOMString color);-->
-<!--                };-->
+        <!--                interface mixin CanvasPath {-->
+        <!--                // shared path API methods-->
+        <!--                void closePath();-->
+        <!--                void moveTo(unrestricted double x, unrestricted double y);-->
+        <!--                void lineTo(unrestricted double x, unrestricted double y);-->
+        <!--                void quadraticCurveTo(unrestricted double cpx, unrestricted double cpy, unrestricted double x,-->
+        <!--                unrestricted double y);-->
+        <!--                void bezierCurveTo(unrestricted double cp1x, unrestricted double cp1y, unrestricted double cp2x,-->
+        <!--                unrestricted double cp2y, unrestricted double x, unrestricted double y);-->
+        <!--                void arcTo(unrestricted double x1, unrestricted double y1, unrestricted double x2, unrestricted double-->
+        <!--                y2, unrestricted double radius);-->
+        <!--                void rect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);-->
+        <!--                void arc(unrestricted double x, unrestricted double y, unrestricted double radius, unrestricted double-->
+        <!--                startAngle, unrestricted double endAngle, optional boolean anticlockwise = false);-->
+        <!--                void ellipse(unrestricted double x, unrestricted double y, unrestricted double radiusX, unrestricted-->
+        <!--                double radiusY, unrestricted double rotation, unrestricted double startAngle, unrestricted double-->
+        <!--                endAngle, optional boolean anticlockwise = false);-->
+        <!--                };-->
 
-<!--                [Exposed=(Window,Worker)]-->
-<!--                interface CanvasPattern {-->
-<!--                // opaque object-->
-<!--                void setTransform(optional DOMMatrix2DInit transform = {});-->
-<!--                };-->
+        <!--                [Exposed=(Window,Worker)]-->
+        <!--                interface CanvasGradient {-->
+        <!--                // opaque object-->
+        <!--                void addColorStop(double offset, DOMString color);-->
+        <!--                };-->
 
-<!--                [Exposed=(Window,Worker)]-->
-<!--                interface TextMetrics {-->
-<!--                // x-direction-->
-<!--                readonly attribute double width; // advance width-->
-<!--                readonly attribute double actualBoundingBoxLeft;-->
-<!--                readonly attribute double actualBoundingBoxRight;-->
+        <!--                [Exposed=(Window,Worker)]-->
+        <!--                interface CanvasPattern {-->
+        <!--                // opaque object-->
+        <!--                void setTransform(optional DOMMatrix2DInit transform = {});-->
+        <!--                };-->
 
-<!--                // y-direction-->
-<!--                readonly attribute double fontBoundingBoxAscent;-->
-<!--                readonly attribute double fontBoundingBoxDescent;-->
-<!--                readonly attribute double actualBoundingBoxAscent;-->
-<!--                readonly attribute double actualBoundingBoxDescent;-->
-<!--                readonly attribute double emHeightAscent;-->
-<!--                readonly attribute double emHeightDescent;-->
-<!--                readonly attribute double hangingBaseline;-->
-<!--                readonly attribute double alphabeticBaseline;-->
-<!--                readonly attribute double ideographicBaseline;-->
-<!--                };-->
+        <!--                [Exposed=(Window,Worker)]-->
+        <!--                interface TextMetrics {-->
+        <!--                // x-direction-->
+        <!--                readonly attribute double width; // advance width-->
+        <!--                readonly attribute double actualBoundingBoxLeft;-->
+        <!--                readonly attribute double actualBoundingBoxRight;-->
 
-<!--                [Exposed=(Window,Worker),-->
-<!--                Serializable]-->
-<!--                interface ImageData {-->
-<!--                constructor(unsigned long sw, unsigned long sh);-->
-<!--                constructor(Uint8ClampedArray data, unsigned long sw, optional unsigned long sh);-->
+        <!--                // y-direction-->
+        <!--                readonly attribute double fontBoundingBoxAscent;-->
+        <!--                readonly attribute double fontBoundingBoxDescent;-->
+        <!--                readonly attribute double actualBoundingBoxAscent;-->
+        <!--                readonly attribute double actualBoundingBoxDescent;-->
+        <!--                readonly attribute double emHeightAscent;-->
+        <!--                readonly attribute double emHeightDescent;-->
+        <!--                readonly attribute double hangingBaseline;-->
+        <!--                readonly attribute double alphabeticBaseline;-->
+        <!--                readonly attribute double ideographicBaseline;-->
+        <!--                };-->
 
-<!--                readonly attribute unsigned long width;-->
-<!--                readonly attribute unsigned long height;-->
-<!--                readonly attribute Uint8ClampedArray data;-->
-<!--                };-->
+        <!--                [Exposed=(Window,Worker),-->
+        <!--                Serializable]-->
+        <!--                interface ImageData {-->
+        <!--                constructor(unsigned long sw, unsigned long sh);-->
+        <!--                constructor(Uint8ClampedArray data, unsigned long sw, optional unsigned long sh);-->
 
-<!--                [Exposed=(Window,Worker)]-->
-<!--                interface Path2D {-->
-<!--                constructor(optional (Path2D or DOMString) path);-->
+        <!--                readonly attribute unsigned long width;-->
+        <!--                readonly attribute unsigned long height;-->
+        <!--                readonly attribute Uint8ClampedArray data;-->
+        <!--                };-->
 
-<!--                void addPath(Path2D path, optional DOMMatrix2DInit transform = {});-->
-<!--                };-->
-<!--                Path2D includes CanvasPath;-->
+        <!--                [Exposed=(Window,Worker)]-->
+        <!--                interface Path2D {-->
+        <!--                constructor(optional (Path2D or DOMString) path);-->
+
+        <!--                void addPath(Path2D path, optional DOMMatrix2DInit transform = {});-->
+        <!--                };-->
+        <!--                Path2D includes CanvasPath;-->
     </body>
 </html>
